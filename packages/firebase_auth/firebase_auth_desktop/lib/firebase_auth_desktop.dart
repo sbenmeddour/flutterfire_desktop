@@ -100,16 +100,17 @@ class FirebaseAuthDesktop extends FirebaseAuthPlatform {
       _idTokenChangesListeners = <String, StreamController<UserPlatform?>>{};
 
   @override
-  FirebaseAuthPlatform delegateFor(
-      {required FirebaseApp app, Persistence? persistence}) {
-    // The persistence parameter is not used because it's only available on web
-    // based platforms.
+  FirebaseAuthPlatform delegateFor({
+    required FirebaseApp app,
+    Persistence? persistence,
+  }) {
     return FirebaseAuthDesktop(app: app);
   }
 
+
   @override
   FirebaseAuthPlatform setInitialValues({
-    Map<String, dynamic>? currentUser,
+    PigeonUserDetails? currentUser,
     String? languageCode,
   }) {
     return this;

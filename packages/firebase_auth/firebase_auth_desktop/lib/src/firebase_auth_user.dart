@@ -13,10 +13,17 @@ import 'multi_factor.dart';
 import 'utils/desktop_utils.dart';
 
 /// Dart delegate implementation of [UserPlatform].
+///
 class User extends UserPlatform {
   // ignore: public_member_api_docs
-  User(FirebaseAuthPlatform auth, this._user)
-      : super(auth, MultiFactorDesktop(auth), _user.toMap());
+  User(
+    FirebaseAuthPlatform auth,
+    this._user,
+  ) : super(
+    auth,
+    MultiFactorDesktop(auth),
+    _user.asPigeon(),
+  );
 
   final auth_dart.User _user;
 
@@ -32,7 +39,7 @@ class User extends UserPlatform {
   String? get email => _user.email;
 
   @override
-  bool get emailVerified => _user.emailVerified;
+  bool get isEmailVerified => _user.emailVerified;
 
   @override
   Future<String> getIdToken(bool forceRefresh) {
@@ -44,7 +51,15 @@ class User extends UserPlatform {
     try {
       final idTokenResult = await _user.getIdTokenResult(forceRefresh);
 
-      return IdTokenResult(idTokenResult.toMap);
+      final pigeonToken = PigeonIdTokenResult(
+        token: idTokenResult.token,
+        expirationTimestamp: idTokenResult.expirationTime?.toUtc().millisecondsSinceEpoch,
+        authTimestamp: idTokenResult.authTime?.toUtc().millisecondsSinceEpoch,
+        issuedAtTimestamp: idTokenResult.issuedAtTime?.toUtc().millisecondsSinceEpoch,
+        signInProvider: idTokenResult.signInProvider,
+        claims: idTokenResult.claims,
+      );
+      return IdTokenResult(pigeonToken);
     } catch (e) {
       throw getFirebaseAuthException(e);
     }
@@ -83,7 +98,6 @@ class User extends UserPlatform {
 
   @override
   Future<UserCredentialPlatform> linkWithPopup(AuthProvider provider) {
-    // TODO: implement linkWithPopup
     throw UnimplementedError();
   }
 
@@ -98,7 +112,7 @@ class User extends UserPlatform {
 
   @override
   List<UserInfo> get providerData {
-    return _user.providerData.map((user) => UserInfo(user.toMap())).toList();
+    return _user.providerData.map((user) => UserInfo.fromJson(user.toMap())).toList();
   }
 
   @override
@@ -204,5 +218,23 @@ class User extends UserPlatform {
       [ActionCodeSettings? actionCodeSettings]) {
     // TODO: implement verifyBeforeUpdateEmail
     throw UnimplementedError();
+  }
+}
+
+extension _Secteur on auth_dart.User {
+
+  PigeonUserDetails asPigeon() {
+    final userInfo = providerData.first;
+    return PigeonUserDetails(
+      userInfo: PigeonUserInfo(
+        uid: uid,
+        isAnonymous: isAnonymous,
+        isEmailVerified: emailVerified,
+        providerId: userInfo.providerId,
+        tenantId: tenantId,
+        refreshToken: refreshToken,
+      ),
+      providerData: [],
+    );
   }
 }
