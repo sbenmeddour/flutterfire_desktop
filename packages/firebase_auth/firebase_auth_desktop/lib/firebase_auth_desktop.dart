@@ -11,7 +11,6 @@ import 'dart:async';
 import 'package:firebase_auth_dart/firebase_auth_dart.dart' as auth_dart;
 import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_core_dart/firebase_core_dart.dart' as core_dart;
 import 'package:meta/meta.dart';
 
 import 'src/confirmation_result.dart';
@@ -24,7 +23,7 @@ import 'src/utils/desktop_utils.dart';
 class FirebaseAuthDesktop extends FirebaseAuthPlatform {
   /// Entry point for the [FirebaseAuthDesktop] class.
   FirebaseAuthDesktop({required FirebaseApp app})
-      : _app = core_dart.Firebase.app(app.name),
+      : _app = Firebase.app(app.name),
         super(appInstance: app) {
     // Create a app instance broadcast stream for both delegate listener events
     _userChangesListeners[app.name] =
@@ -77,7 +76,7 @@ class FirebaseAuthDesktop extends FirebaseAuthPlatform {
   auth_dart.FirebaseAuth? get _delegate =>
       _app == null ? null : auth_dart.FirebaseAuth.instanceFor(app: _app!);
 
-  final core_dart.FirebaseApp? _app;
+  final FirebaseApp? _app;
 
   @override
   UserPlatform? get currentUser {
