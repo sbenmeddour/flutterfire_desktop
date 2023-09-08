@@ -11,7 +11,10 @@ environment:
 dependencies:
   firebase_auth: 4.8.0
   firebase_auth_dart:
-    path: ../firebase_auth_dart
+    git:
+      url: https://github.com/sbenmeddour/flutterfire_desktop.git
+      ref: dev3
+      path: packages/firebase_auth/firebase_auth_dart/
   firebase_auth_platform_interface: 6.17.0
   firebase_core: 2.15.1
   flutter:
