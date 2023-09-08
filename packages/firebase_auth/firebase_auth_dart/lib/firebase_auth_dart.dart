@@ -10,7 +10,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:firebase_core_dart/firebase_core_dart.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:storagebox/storagebox.dart';

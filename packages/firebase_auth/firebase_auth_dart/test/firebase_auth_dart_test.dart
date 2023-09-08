@@ -6,7 +6,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth_dart/firebase_auth_dart.dart';
-import 'package:firebase_core_dart/firebase_core_dart.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
